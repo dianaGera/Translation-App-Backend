@@ -1,0 +1,3 @@
+db_json/vocab.json
+/venv
+*.sqlite3
