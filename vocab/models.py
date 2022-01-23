@@ -34,7 +34,7 @@ class EnWord(models.Model):
 
 
 class RuWord(models.Model):
-    word = models.CharField(max_length=50)
+    word = models.CharField(max_length=50, null=True)
 
     class Meta:
         ordering = ['word']
@@ -45,7 +45,7 @@ class RuWord(models.Model):
 
 class Collocation(models.Model):
     en_collocation = models.CharField(max_length=50)
-    ru_collocation = models.CharField(max_length=50)
+    ru_collocation = models.CharField(max_length=50, null=True)
 
     class Meta:
         ordering = ['en_collocation']
@@ -56,7 +56,7 @@ class Collocation(models.Model):
 
 class Phrase(models.Model):
     en_phrase = models.CharField(max_length=50)
-    ru_phrase = models.CharField(max_length=50)
+    ru_phrase = models.CharField(max_length=50, null=True)
 
     class Meta:
         ordering = ['en_phrase']
@@ -67,7 +67,7 @@ class Phrase(models.Model):
 
 class CognateWord(models.Model):
     en_cognate_word = models.CharField(max_length=50)
-    ru_cognate_word = models.CharField(max_length=50)
+    ru_cognate_word = models.CharField(max_length=50, null=True)
 
     class Meta:
         ordering = ['en_cognate_word']
@@ -77,7 +77,7 @@ class CognateWord(models.Model):
 
 
 class PartOfSpeech(models.Model):
-    part_of_speech = models.CharField(max_length=50)
+    part_of_speech = models.CharField(max_length=50, null=True)
 
     class Meta:
         ordering = ['part_of_speech']
