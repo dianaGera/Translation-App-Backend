@@ -37,7 +37,7 @@ class RuWord(models.Model):
     word = models.CharField(max_length=50, null=True)
 
     class Meta:
-        ordering = ['word']
+        ordering = ['pk']
 
     def __str__(self):
         return self.word

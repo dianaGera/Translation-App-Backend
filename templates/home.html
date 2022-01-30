@@ -1,13 +1,147 @@
-<!doctype html>
+{% load static %}<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Test API</title>
+    <link rel="stylesheet" href="{% static 'vocab/css/bootstrap.min.css' %}">
+    <title>Search</title>
 </head>
+<style>
+.content {
+    width: 1000px;
+    margin: 3% auto;
+}
+.vertical-center {
+    margin: 10% auto;
+    width: 60%;
+}
+.items-tr, .items {
+    margin: 5px;
+}
+.block-flex {
+    display: flex;
+}
+.items, h1 {
+    width: 30%;
+    text-align: right;
+    margin-right: 5%;
+}
+.block-tr {
+    color: #636569;
+    margin-bottom: 30px;
+    margin-right: 5%;
+}
+.tr {
+    color: #636569;
+}
+a, h1 {
+    color: #eb4634;
+    text-decoration: none
+}
+a:hover{
+    color: #eb4634;
+    text-decoration: underline;
+}
+audio {
+    height: 20px;
+    margin-left: 20px;
+}
+.audio {
+    margin-left: 10%;
+}
+.main {
+    width: 400px;
+    margin: auto;
+    margin-top: -8%;
+}
+.details {
+    width: 60%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+</style>
 <body>
+    <div class="vertical-center">
+        <form class="d-flex" method="POST">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q"
+                   value="{{request.POST.q}}">
+            <button class="btn btn-outline-danger" type="submit">Search</button>
+        </form></div>
+        {% if var == 'details' %}
+            <div class="main">
+                <h1>{{search}}</h1>
+                <div style="margin-top: 20px;">
+                    <div class="block-flex audio">
+                        <p style="color: #eb4634;">US<audio controls class="embed-responsive-item">
+                            <source src="{{search.audio_us}}">
+                        </audio></p>
+                    </div>
+                    <div class="block-flex audio">
+                        <p style="color: #eb4634;">UK<audio controls class="embed-responsive-item">
+                            <source src="{{search.audio_uk}}">
+                        </audio></p>
+                    </div>
+                </div>
+            </div>
+
+                <div class="details">
+                    <h3>Ttanslate</h3>
+                    <div class="block-flex block-tr">
+                        {%for tr in search.translate.all%}
+                        <div class="items-tr">{{tr}},</div>
+                        {% endfor %}
+                    </div>
+                    <h3>Part of speech</h3>
+                    <div class="block-flex block-tr">
+                        {% for part_of_speech in search.part_of_speech.all%}
+                        <div class="items-tr">{{part_of_speech}}</div>
+                        {% endfor %}
+                    </div>
+                    <h3>Collocations</h3>
+                    {% for collocation in search.collocation.all%}
+                    <div class="block-flex tr">
+                        <div class="items" style="text-align: left; color: black">{{collocation}}</div>
+                        <div class="items-tr">{{collocation.ru_collocation}}</div>
+                    </div>
+                    {% endfor %}
+                    <div style="margin-top: 50px;">
+                        <h3>Phrases</h3>
+                        {% for phrase in search.phrase.all%}
+                        <div class="block-flex tr">
+                            <div class="items" style="text-align: left; color: black">{{phrase}}</div>
+                            <div class="items-tr">{{phrase.ru_phrase}}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div style="margin-top: 50px;">
+                        <h3>Cognate words</h3>
+                        {% for cognate_word in search.cognate_word.all%}
+                        <div class="block-flex tr">
+                            <div class="items" style="text-align: left; color: black">{{cognate_word}}</div>
+                            <div class="items-tr">{{cognate_word.ru_cognate_word}}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+        {% elif var %}
+        <div class="content" id="content">
+            {% for word in search %}
+            <div class="block-flex">
+                <div class="items"><a href="{% url 'home' word.pk %}">{{word}}</a></div>
+                <div class="block-flex tr">
+                    {% for translate in word.translate.all%}
+                        <div class="items-tr">{{translate}},</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
 
 </body>
 </html>
